@@ -14,7 +14,7 @@ public class Direccion {
 	int codigoPostal;
 	
 	@Column(length=30)
-	String municipi;
+	String municipio;
 	
 	@Column(length=30)
 	String provincia;
