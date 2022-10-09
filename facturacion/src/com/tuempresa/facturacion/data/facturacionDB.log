@@ -1,0 +1,9 @@
+/*C2*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C3*/SET SCHEMA PUBLIC
+create table facturacion.Producto (numero integer not null, description varchar(50), primary key (numero))
+SET SCHEMA FACTURACION
+INSERT INTO PRODUCTO VALUES(40,'Pan')
+COMMIT
+DELETE FROM PRODUCTO WHERE NUMERO=40
+COMMIT
