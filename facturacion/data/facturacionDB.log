@@ -1,2 +1,31 @@
 /*C4*/SET SCHEMA PUBLIC
 DISCONNECT
+/*C6*/SET SCHEMA PUBLIC
+DROP TABLE FACTURACION.FACTURA_DETALLES
+DROP TABLE FACTURACION.FACTURA
+DISCONNECT
+/*C7*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C8*/SET SCHEMA PUBLIC
+create table facturacion.DocumentoComercial (DTYPE varchar(31) not null, oid varchar(32) not null, anyo integer, fecha date, numero integer, observaciones varchar(255), cliente_numero integer not null, primary key (oid))
+create table facturacion.DocumentoComercial_detalles (DocumentoComercial_oid varchar(32) not null, cantidad integer not null, producto_numero integer)
+alter table facturacion.DocumentoComercial add constraint FKqxvhhtdl5x1bljcimyej4mksx foreign key (cliente_numero) references facturacion.Cliente
+alter table facturacion.DocumentoComercial_detalles add constraint FKgyn78bk9nimdbk5uxm7ioiib1 foreign key (producto_numero) references facturacion.Producto
+alter table facturacion.DocumentoComercial_detalles add constraint FKq37xaecvr7po697tmegcffoba foreign key (DocumentoComercial_oid) references facturacion.DocumentoComercial
+DISCONNECT
+/*C9*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C10*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C11*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C12*/SET SCHEMA PUBLIC
+alter table FACTURACION.DOCUMENTOCOMERCIAL add column factura_oid varchar(32)
+alter table facturacion.DocumentoComercial add constraint FK4lhtu14i3f0y8m4ohuxww2b48 foreign key (factura_oid) references facturacion.DocumentoComercial
+SET SCHEMA FACTURACION
+INSERT INTO CLIENTE VALUES(1,'Daniel',39847,NULL,'FCP','constituyentes','FCP')
+COMMIT
+INSERT INTO DOCUMENTOCOMERCIAL VALUES('Factura','4028818383bf04fd0183bf097d2c0000',2022,'2022-10-09',1,'',1,NULL)
+INSERT INTO DOCUMENTOCOMERCIAL VALUES('Pedido','4028818383bf04fd0183bf097e150001',2022,'2022-10-09',1,'',1,'4028818383bf04fd0183bf097d2c0000')
+INSERT INTO DOCUMENTOCOMERCIAL_DETALLES VALUES('4028818383bf04fd0183bf097e150001',0,2)
+COMMIT
