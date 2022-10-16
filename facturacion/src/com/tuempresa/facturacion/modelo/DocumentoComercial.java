@@ -9,6 +9,8 @@ import javax.validation.constraints.*;
 import org.openxava.annotations.*;
 import org.openxava.calculators.*;
 
+import com.tuempresa.facturacion.calculadores.*;
+
 import lombok.*;
 @Entity @Getter @Setter
 @View(members =
@@ -47,12 +49,15 @@ abstract public class DocumentoComercial extends Identificable{
 			"]")
 	 private Collection<Detalle> detalles;
 	
+	@DefaultValueCalculator(CalculadorPorcentajeIVA.class)
 	@Digits(integer=2, fraction=0) 
 	BigDecimal porcentajeIVA;
+	
 	@ReadOnly
 	@Money
 	@Calculation("sum(detalles.importe) * porcentajeIVA / 100")
 	BigDecimal iva;
+	
 	@ReadOnly
 	@Money
 	@Calculation("sum(detalles.importe) + iva") 
