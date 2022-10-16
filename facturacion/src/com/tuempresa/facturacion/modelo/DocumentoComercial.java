@@ -21,6 +21,7 @@ abstract public class DocumentoComercial extends Identificable{
 	 @Column(length=4)
 	 @DefaultValueCalculator(CurrentYearCalculator.class)
 	 int anyo;
+	 
 	 @Column(length=6)
 	 int numero;
 	 
@@ -33,7 +34,7 @@ abstract public class DocumentoComercial extends Identificable{
 	 Cliente cliente;
 	 
 	@ElementCollection
-	@ListProperties("producto.numero, producto.descripcion, cantidad")
+	@ListProperties("producto.numero, producto.descripcion, cantidad, importe")
 	 Collection<Detalle> detalles;
 	 
 	 @TextArea
