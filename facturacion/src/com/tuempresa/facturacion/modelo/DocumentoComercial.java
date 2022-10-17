@@ -15,7 +15,7 @@ import com.tuempresa.facturacion.calculadores.*;
 import lombok.*;
 @Entity @Getter @Setter
 @View(members =
-"anyo, numero, fecha;"+
+"anyo, numero, fecha,"+
 "datos{"+
 "cliente;"+
 		"detalles;"+
@@ -76,7 +76,7 @@ abstract public class DocumentoComercial extends Identificable{
 		Integer ultimoNumero =(Integer) query.getSingleResult();
 		this.numero = ultimoNumero == null ? 1 : ultimoNumero + 1;
 	}
-	 
+	
 	 
 	 
 	
