@@ -8,16 +8,17 @@ import lombok.*;
 
 @Entity
 @Getter @Setter
-@View(name="Simple", members="numero, nombre")
+@View (name =  "simple",members  = "numero, nombre" )
 public class Cliente {
-@Id
-@Column(length=6)
+	@Id 
+	
+	@Column(length=6) 
 	int numero;
-	@Column(length=50)
-	@Required
-	
+	@Column(length=50)  
+	@Required 
 	String nombre;
-	
+
 	@Embedded @NoFrame
 	Direccion direccion;
+	
 }

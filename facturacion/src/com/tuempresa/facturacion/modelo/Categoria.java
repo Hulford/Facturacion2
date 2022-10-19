@@ -4,11 +4,9 @@ import javax.persistence.*;
 
 import lombok.*;
 
-@Entity
-@Getter @Setter
+@Entity @Setter @Getter
 public class Categoria extends Identificable{
 
-	
-	@Column(length=50)
+	@Column(length = 50)
 	String descripcion;
 }

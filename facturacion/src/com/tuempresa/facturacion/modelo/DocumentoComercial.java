@@ -1,4 +1,5 @@
 package com.tuempresa.facturacion.modelo;
+
 import java.math.*;
 import java.time.*;
 import java.util.*;
@@ -13,78 +14,74 @@ import org.openxava.jpa.*;
 import com.tuempresa.facturacion.calculadores.*;
 
 import lombok.*;
+
 @Entity @Getter @Setter
-@View(members =
-"anyo, numero, fecha,"+
-"datos{"+
-"cliente;"+
-		"detalles;"+
-"observaciones"+
-		"}")
+@View(members = 
+        "anyo, numero, fecha,"+
+     "datos {"+    
+		"cliente;"+
+        "detalles;"+
+		"observaciones"+
+     "}"
+ )
 abstract public class DocumentoComercial extends Identificable{
 	
-	 @Column(length=4)
-	 @DefaultValueCalculator(CurrentYearCalculator.class)
-	 int anyo;
-	 
-	 @Column(length=6)
-	 //@DefaultValueCalculator(value=CalculadorSiguienteNumeroParaAnyo.class, properties=@PropertyValue(name = "anyo"))
-	 @ReadOnly
-	 int numero;
-	 
-	 @Required
+	@DefaultValueCalculator(CurrentYearCalculator.class)
+	@Column(length = 4)
+	int anyo;
+	
+	@Column(length = 6)
+	//@DefaultValueCalculator (value = CalculadorSiguienteNumeroParaAnyo.class,properties = @PropertyValue (name="anyo"))
+	@ReadOnly
+	int numero; 
+	
+	@Required
 	@DefaultValueCalculator(CurrentLocalDateCalculator.class)
-	 LocalDate fecha;
-	 
-	 @Stereotype("MENU")
-	 String observaciones;
-	 
-	 @ManyToOne(fetch=FetchType.LAZY, optional=false)
-	 @ReferenceView("Simple")
-	 Cliente cliente;
-	 
+	LocalDate fecha;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ReferenceView("simple")
+	Cliente cliente;
+	  
 	@ElementCollection
-	@ListProperties("producto.numero, producto.descripcion, cantidad, precioPorUnidad, " +
-			"importe+[" + 
-			"documentoComercial.porcentajeIVA," +
-			"documentoComercial.iva," +
-			"documentoComercial.importeTotal" +
-			"]")
-	 private Collection<Detalle> detalles;
+	@ListProperties("producto.numero, producto.descripcion, cantidad, precioPorUnidad,"+
+		 " importe+["
+		 + "documentoComercial.porcentajeIVA,"
+		 + "documentoComercial.iva,"
+		 + "documentoComercial.importeTotal"
+		 + "]"
+		 )
+	Collection<Detalle>detalles;
+	
+	@Stereotype("MEMO")  
+	String observaciones;
 	
 	@DefaultValueCalculator(CalculadorPorcentajeIVA.class)
-	@Digits(integer=2, fraction=0) 
+	@Digits(integer = 2,fraction = 0)
 	BigDecimal porcentajeIVA;
 	
-	@ReadOnly
-	@Money
+	@ReadOnly 
+	@Stereotype("DINERO")
 	@Calculation("sum(detalles.importe) * porcentajeIVA / 100")
 	BigDecimal iva;
 	
 	@ReadOnly
-	@Money
-	@Calculation("sum(detalles.importe) + iva") 
-	BigDecimal importeTotal; 
-	
-	@PrePersist
-	private void calcularNumero () {
-		Query query = XPersistence.getManager().createQuery(
-				"select max(f.numero) form "+
-		getClass().getSimpleName()+
-		"f wher f anyo = :anyo");
-		query.setParameter("anyo", anyo);
-		Integer ultimoNumero =(Integer) query.getSingleResult();
-		this.numero = ultimoNumero == null ? 1 : ultimoNumero + 1;
+	@Stereotype("DINERO")
+	@Calculation("sum(detalles.importe)+iva")
+	BigDecimal importeTotal;
+	  
+	@PrePersist  
+	private void calcularNumero() {
+	    Query query = XPersistence.getManager().createQuery(
+	        "select max(f.numero) from " +
+	        getClass().getSimpleName() +  
+	        " f where f.anyo = :anyo");
+	    query.setParameter("anyo", anyo);
+	    Integer ultimoNumero = (Integer) query.getSingleResult();
+	    this.numero = ultimoNumero == null ? 1 : ultimoNumero + 1;
 	}
-	@org.hibernate.annotations.Formula("IMPORTETOTAL * 0.10") 
-	@Setter(AccessLevel.NONE) 
-	@Money
-	BigDecimal beneficioEstimado; 
-	 
-	 
-	
-	
-	
-	
-	
+	@org.hibernate.annotations.Formula("IMPORTETOTAL * 0.10")
+	@Setter(AccessLevel.NONE)
+	@Stereotype("DINERO")
+	BigDecimal beneficioEstimado;
 }

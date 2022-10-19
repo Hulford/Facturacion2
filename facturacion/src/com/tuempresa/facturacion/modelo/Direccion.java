@@ -7,15 +7,15 @@ import lombok.*;
 @Embeddable @Getter @Setter
 public class Direccion {
 
-	@Column(length=30)
+	@Column(length = 30)
 	String viaPublica;
 	
-	@Column(length=5)
-	int codigoPostal;
+	@Column (length = 5)
+	int CodigoPostal;
 	
-	@Column(length=30)
+	@Column(length = 20)
 	String municipio;
 	
-	@Column(length=30)
+	@Column(length = 30)
 	String provincia;
 }
